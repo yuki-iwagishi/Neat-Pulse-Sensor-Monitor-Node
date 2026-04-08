@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" translate="no">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google" content="notranslate">
   <title>Neat Pulse Sensor Monitor</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <style>
@@ -150,11 +151,11 @@
     <div class="hdr-right">
       <!-- 言語切替 -->
       <div class="lang-switcher">
-        <button class="lang-btn" onclick="setLang('en')">EN</button>
-        <button class="lang-btn active" onclick="setLang('ja')">日本語</button>
-        <button class="lang-btn" onclick="setLang('zh-TW')">繁體</button>
-        <button class="lang-btn" onclick="setLang('zh-CN')">简体</button>
-        <button class="lang-btn" onclick="setLang('ko')">한국어</button>
+        <button class="lang-btn" data-lang="en"    onclick="setLang('en')">EN</button>
+        <button class="lang-btn active" data-lang="ja" onclick="setLang('ja')">日本語</button>
+        <button class="lang-btn" data-lang="zh-TW" onclick="setLang('zh-TW')">繁體中文</button>
+        <button class="lang-btn" data-lang="zh-CN" onclick="setLang('zh-CN')">简体中文</button>
+        <button class="lang-btn" data-lang="ko"    onclick="setLang('ko')">한국어</button>
       </div>
       <!-- 温度単位切替 -->
       <div class="unit-switcher">
@@ -601,12 +602,11 @@ function t(key) {
 function setLang(lang) {
   currentLang = lang;
   document.documentElement.lang = lang;
+  document.documentElement.setAttribute('translate', 'no'); // 自動翻訳を常に無効化
 
-  // ボタンのアクティブ状態
+  // ボタンのアクティブ状態（data-lang 属性で確実に照合）
   document.querySelectorAll('.lang-btn').forEach(b => {
-    const bl = b.textContent.trim();
-    const map = { 'EN':'en','日本語':'ja','繁體':'zh-TW','简体':'zh-CN','한국어':'ko' };
-    b.classList.toggle('active', map[bl] === lang);
+    b.classList.toggle('active', b.dataset.lang === lang);
   });
 
   // data-i18n 属性を持つ要素のテキストを更新
